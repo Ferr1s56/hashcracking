@@ -26,19 +26,19 @@ elif wordlistSelection == 3:
 
 print("Opening wordlist...")
 wordlistFile = open(wordlistUsed, "r", encoding="utf8")
-wordlist = wordlistFile.read()
-wordlistAsList = wordlist.split("\n")
+
 
 encodedHash = str(input("Input hash: "))
 clearText = ""
 
 startTime = float(time.time())
 
-for x in range(len(wordlistAsList)):
-    hashedEntryRaw = hashlib.md5(wordlistAsList[x].encode())
-    hashedEntry = hashedEntryRaw.hexdigest()
+for line in wordlistFile.readlines():
+    readLine = line.replace("\n", "")
+    hashedEntryRaw = hashlib.md5(readLine.encode())
+    hashedEntry = str(hashedEntryRaw.hexdigest())
     if encodedHash == hashedEntry:
-        clearText = wordlistAsList[x]
+        clearText = line
         break
     else:
         pass
@@ -50,7 +50,7 @@ if clearText == "":
     print("Password could not be decoded, try a different wordlist or recheck your hash.")
 
 else: 
-    print("Decoded password is: " + clearText + ".")
+    print("Decoded password is: " + clearText)
 
 print("Decoding took approximately " + breakingTime + " seconds.")
 print("Closing wordlist...")
